@@ -10,6 +10,10 @@
     "mailchimp",
     "api"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/pearlshare/simple-mailchimp"
+  },
   "author": "oli@pearlshare.com",
   "license": "MIT",
   "dependencies": {
