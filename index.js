@@ -32,18 +32,25 @@ var Mailchimp = function (options) {
 /*
  * perform a given action
  * @param {String} path - path of the action such as lists/subscribe
- * @param {Object} params - mailchimp params to send
+ * @param {Object} body - mailchimp body to send
  * @param {Function} callback
  */
-Mailchimp.prototype.perform = function (path, params, callback) {
+Mailchimp.prototype.perform = function (path, body, callback) {
   if (!path){
     throw new Error("path requried");
   }
-  if (!params){
-    throw new Error("params required");
+  if (!body){
+    throw new Error("body required");
+  }
+  if (!body.apikey) {
+    // Set apikey from config
+    body.apikey = this.apiKey;
+
+    if (!body.apikey) {
+      throw new Error("apikey required");
+    }
   }
 
-  params.apiKey = params.apiKey || this.apiKey;
   var url = "" + this.host + "/" + this.version + "/" + path + "." + this.format;
 
   this.logger("sending request to " + url);
@@ -53,7 +60,7 @@ Mailchimp.prototype.perform = function (path, params, callback) {
       .post(url)
       .set("Accept", "application/json")
       .set("Content-Type", "application/json")
-      .send(params)
+      .send(body)
       .end(cb);
   }
 
