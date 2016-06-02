@@ -1,6 +1,8 @@
-# Simple Mailchimp
+# Mailchimp client
 
 The mailchimp API is relatively straight forward so rather than a huge client library this is a simple wrapper which lets you specify the url and simply add the auth and does the request.
+
+Supports Mailchimp API 3.0 or greater 
 
 ## Usage
 
