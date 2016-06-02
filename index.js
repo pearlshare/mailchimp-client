@@ -1,5 +1,3 @@
-"use strict";
-
 var got = require("got");
 
 function isPlainObj (x) {
