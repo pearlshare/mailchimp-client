@@ -15,7 +15,7 @@
     "url": "https://github.com/pearlshare/mailchimp-client"
   },
   "author": "oli@pearlshare.com",
-  "license": "MIT",
+  "license": "Apache License 2.0",
   "dependencies": {
     "superagent": "^0.21.0"
   },
