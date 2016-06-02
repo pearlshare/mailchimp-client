@@ -1,5 +1,5 @@
 {
-  "name": "simple-mailchimp",
+  "name": "mailchimp-client",
   "version": "0.0.3",
   "description": "A simplified wrapper around the mailchimp API",
   "main": "index.js",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/pearlshare/simple-mailchimp"
+    "url": "https://github.com/pearlshare/mailchimp-client"
   },
   "author": "oli@pearlshare.com",
   "license": "MIT",
