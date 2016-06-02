@@ -1,8 +1,10 @@
+[![CircleCI](https://circleci.com/gh/pearlshare/mailchimp-client.svg?style=svg&circle-token=8465700c57b2460ac02813ecc4a7262d495e31b5)](https://circleci.com/gh/pearlshare/mailchimp-client)
+
 # Mailchimp client
 
 The mailchimp API is relatively straight forward so rather than a huge client library this is a simple wrapper which lets you specify the url and simply add the auth and does the request.
 
-Supports Mailchimp API 3.0 or greater 
+Supports Mailchimp API 3.0 or greater
 
 ## Usage
 
