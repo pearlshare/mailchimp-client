@@ -1,0 +1,30 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+    "describe": false,
+    "before": false,
+    "beforeEach": false,
+    "it": false,
+    "after": true
+  },
+  "rules": {
+    "camelcase": 1,
+    "eol-last": 1,
+    "key-spacing": 0,
+    "new-cap": 0,
+    "no-multi-spaces": 0,
+    "no-underscore-dangle": 0,
+    "space-before-function-paren": 1,
+    "semi": [2, "always"],
+    "strict": 0,
+    "quotes": [2, "double", "avoid-escape"],
+    "valid-jsdoc": [1, {
+      "prefer": {
+          "return": "returns"
+      }
+  }]
+  }
+}

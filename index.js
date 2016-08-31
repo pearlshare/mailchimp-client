@@ -3,8 +3,8 @@ var got = require("got");
 function isPlainObj (x) {
 	var prototype;
   var toString = Object.prototype.toString;
-	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
-};
+	return toString.call(x) === "[object Object]" && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
+}
 
 
 /*
@@ -25,19 +25,20 @@ var Mailchimp = function (options) {
   }
 
   this.apiKey = options.apiKey;
-  this.logger = (options.logger || function(){});
+  this.logger = (options.logger || function () {});
   this.host = this.host || "https://us8.api.mailchimp.com";
   this.version = this.version || "3.0";
   this.options = options;
 };
 
-/*
+/**
  * The function that makes requests to the API
+ * @param {String} method - The HTTP method to use
  * @param {String} path - The path on the API to make the request to
- * @param {Object} data - The data to send with the request
+ * @param {Object} opts - The request options such as headers, body and query
  * @returns {Promise} promise resolving to a boolean if the request was successful
  */
-Mailchimp.prototype.makeRequest = function (method, path, body) {
+Mailchimp.prototype.makeRequest = function (method, path, opts) {
   var url = this.host + "/" + this.version + "/" + path;
   var headers = {
     "Accept": "application/json",
@@ -45,14 +46,26 @@ Mailchimp.prototype.makeRequest = function (method, path, body) {
     "Authorization": "apikey " + this.apiKey
   };
 
-  var opts = {
-    method: method,
-    headers: headers,
-    json: true
+  var reqOpts = {
+    method: method
+  };
+
+  if (opts.headers) {
+    reqOpts.headers = Object.assign(headers, opts.headers);
+  } else {
+    reqOpts.headers = opts.headers;
   }
 
-  if ([undefined, null].indexOf(body) < 0 && isPlainObj(body)) {
-    opts.body = JSON.stringify(body);
+  if ([undefined, null].indexOf(opts.body) < 0 ) {
+    if (isPlainObj(opts.body)) {
+      reqOpts.body = JSON.stringify(opts.body);
+    } else {
+      reqOpts.body = opts.body;
+    }
+  }
+
+  if (opts.query) {
+    reqOpts.query = opts.query;
   }
 
   return got(url, opts)
@@ -60,62 +73,56 @@ Mailchimp.prototype.makeRequest = function (method, path, body) {
       if (res.error) {
         throw res.error;
       } else {
-        return res.body;
+        return JSON.parse(res.body);
       }
-    })
-    .catch(function (e) {
-      throw e;
     });
-}
+};
 
 /*
  * post a given data
  * @param {String} path - path of the action such as lists/subscribe
- * @param {Object} body - mailchimp body to send
+ * @param {Object} opts - 'got' options such as body and query
  * @param {Function} callback
  */
-Mailchimp.prototype.post = function (path, body, callback) {
+Mailchimp.prototype.post = function (path, opts, callback) {
   if (!path){
     throw new Error("path requried");
   }
-  if (!body){
+  if (!opts.body){
     throw new Error("body required");
   }
 
-  if (!callback){
-    return this.makeRequest("POST", path, body);
-  } else {
-    this.makeRequest("POST", path, body)
-      .then(function (resp) {
-        callback(false, resp);
+  if (callback) {
+    return this.makeRequest("POST", path, opts)
+      .then(function (body) {
+        callback(null, body);
       })
-      .catch(function (e) {
-        callback(e);
-      });
+      .catch(callback);
+  } else {
+    return this.makeRequest("POST", path, opts);
   }
 };
 
 /*
  * get data
  * @param {String} path - path of the action such as lists/subscribe
+ * @param {Object} opts - 'got' options such as body and query
  * @param {Object} body - mailchimp body to send
  * @param {Function} callback
  */
-Mailchimp.prototype.get = function (path, callback) {
+Mailchimp.prototype.get = function (path, opts, callback) {
   if (!path){
     throw new Error("path requried");
   }
 
   if (!callback){
-    return this.makeRequest("GET", path);
+    return this.makeRequest("GET", path, opts);
   } else {
-    this.makeRequest("GET", path)
-      .then(function (resp) {
-        callback(false, resp);
+    this.makeRequest("GET", path, opts)
+      .then(function (res) {
+        callback(null, res.body);
       })
-      .catch(function (e) {
-        callback(e);
-      });
+      .catch(callback);
   }
 };
 
