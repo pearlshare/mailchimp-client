@@ -3,10 +3,6 @@
   "version": "0.0.5",
   "description": "A simplified wrapper around the mailchimp API",
   "main": "index.js",
-  "engines": {
-    "node": "6.2.x",
-    "npm": "3.8.x"
-  },
   "scripts": {
     "test": "mocha test && ./node_modules/.bin/eslint lib test"
   },
