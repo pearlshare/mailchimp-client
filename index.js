@@ -50,7 +50,7 @@ Mailchimp.prototype.makeRequest = function (method, path, opts) {
     method: method
   };
 
-  if (opts.headers) {
+  if (opts && opts.headers) {
     reqOpts.headers = Object.assign(headers, opts.headers);
   } else {
     reqOpts.headers = opts.headers;
@@ -64,7 +64,7 @@ Mailchimp.prototype.makeRequest = function (method, path, opts) {
     }
   }
 
-  if (opts.query) {
+  if (opts && opts.query) {
     reqOpts.query = opts.query;
   }
 
