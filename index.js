@@ -54,7 +54,7 @@ Mailchimp.prototype.makeRequest = function (method, path, opts) {
     reqOpts.headers = Object.assign(headers, opts.headers);
   }
 
-  if ([undefined, null].indexOf(opts.body) < 0 ) {
+  if (opts && [undefined, null].indexOf(opts.body) < 0 ) {
     if (isPlainObj(opts.body)) {
       reqOpts.body = JSON.stringify(opts.body);
     } else {
