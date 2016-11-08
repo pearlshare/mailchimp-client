@@ -50,13 +50,11 @@ Mailchimp.prototype.makeRequest = function (method, path, opts) {
     method: method
   };
 
-  if (opts.headers) {
+  if (opts && opts.headers) {
     reqOpts.headers = Object.assign(headers, opts.headers);
-  } else {
-    reqOpts.headers = opts.headers;
   }
 
-  if ([undefined, null].indexOf(opts.body) < 0 ) {
+  if (opts && [undefined, null].indexOf(opts.body) < 0 ) {
     if (isPlainObj(opts.body)) {
       reqOpts.body = JSON.stringify(opts.body);
     } else {
@@ -64,7 +62,7 @@ Mailchimp.prototype.makeRequest = function (method, path, opts) {
     }
   }
 
-  if (opts.query) {
+  if (opts && opts.query) {
     reqOpts.query = opts.query;
   }
 
