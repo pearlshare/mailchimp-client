@@ -75,7 +75,6 @@ describe("mailchimpClient", function (){
         });
       });
     });
-
   });
 
 });

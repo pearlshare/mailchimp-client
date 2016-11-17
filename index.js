@@ -40,18 +40,18 @@ var Mailchimp = function (options) {
  */
 Mailchimp.prototype.makeRequest = function (method, path, opts) {
   var url = this.host + "/" + this.version + "/" + path;
-  var headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "apikey " + this.apiKey
-  };
 
   var reqOpts = {
-    method: method
+    method: method,
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "apikey" + this.apiKey
+    }
   };
 
   if (opts && opts.headers) {
-    reqOpts.headers = Object.assign(headers, opts.headers);
+    Object.assign(reqOpts.headers, opts.headers);
   }
 
   if (opts && [undefined, null].indexOf(opts.body) < 0 ) {
@@ -66,7 +66,7 @@ Mailchimp.prototype.makeRequest = function (method, path, opts) {
     reqOpts.query = opts.query;
   }
 
-  return got(url, opts)
+  return got(url, reqOpts)
     .then(function (res) {
       if (res.error) {
         throw res.error;
