@@ -17,7 +17,8 @@ describe("mailchimpClient", function (){
   });
 
   describe("client", function (){
-    var client = new Mailchimp({apiKey: "xxx"});
+    var apiKey = "xxx";
+    var client = new Mailchimp({apiKey: apiKey});
     var userDetails = {
       "email_address": "email@example.com",
       "merge_vars": {
@@ -40,6 +41,7 @@ describe("mailchimpClient", function (){
 
       beforeEach(function (){
         nock(client.host)
+          .matchHeader("Authorization", "apikey " + apiKey)
           .filteringPath(function (path){
             if (path.match(/lists/)) {
               return "/3.0/lists/" + listId + "/subscribe";
