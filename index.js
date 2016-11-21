@@ -46,7 +46,7 @@ Mailchimp.prototype.makeRequest = function (method, path, opts) {
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "Authorization": "apikey" + this.apiKey
+      "Authorization": "apikey " + this.apiKey
     }
   };
 
