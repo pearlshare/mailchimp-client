@@ -102,6 +102,31 @@ Mailchimp.prototype.post = function (path, opts, callback) {
 };
 
 /*
+ * put a given data
+ * @param {String} path - path of the action such as lists/subscribe
+ * @param {Object} opts - 'got' options such as body and query
+ * @param {Function} callback
+ */
+Mailchimp.prototype.put = function (path, opts, callback) {
+  if (!path){
+    throw new Error("path requried");
+  }
+  if (!opts.body){
+    throw new Error("body required");
+  }
+
+  if (callback) {
+    return this.makeRequest("PUT", path, opts)
+      .then(function (body) {
+        callback(null, body);
+      })
+      .catch(callback);
+  } else {
+    return this.makeRequest("PUT", path, opts);
+  }
+};
+
+/*
  * get data
  * @param {String} path - path of the action such as lists/subscribe
  * @param {Object} opts - 'got' options such as body and query

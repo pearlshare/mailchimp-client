@@ -37,22 +37,22 @@ describe("mailchimpClient", function (){
       expect(client.get).to.be.a("function");
     });
 
-    describe("lists/subscribe", function () {
+    describe("lists/members", function () {
 
       beforeEach(function (){
         nock(client.host)
           .matchHeader("Authorization", "apikey " + apiKey)
           .filteringPath(function (path){
             if (path.match(/lists/)) {
-              return "/3.0/lists/" + listId + "/subscribe";
+              return "/3.0/lists/" + listId + "/members";
             }
           })
-          .post("/3.0/lists/" + listId + "/subscribe")
+          .post("/3.0/lists/" + listId + "/members")
           .reply(200, listSubscribeSuccess);
       });
 
       it("should subscribe and callback", function (done) {
-        client.post("lists/" + listId + "/subscribe", {
+        client.post("lists/" + listId + "/members", {
           body: userDetails
         }, function (err, member) {
           if (err) {
@@ -68,7 +68,50 @@ describe("mailchimpClient", function (){
       });
 
       it("should subscribe and return a promise", function () {
-        return client.post("lists/" + listId + "/subscribe", {
+        return client.post("lists/" + listId + "/members", {
+          body: userDetails
+        }).then(function (member) {
+          expect(member.email).to.equal(listSubscribeSuccess.email);
+          expect(member.euid).to.equal(listSubscribeSuccess.euid);
+          expect(member.leid).to.equal(listSubscribeSuccess.leid);
+        });
+      });
+    });
+
+    describe("lists/unsubscribe", function () {
+
+      userDetails.status = "unsubscribed",
+
+      beforeEach(function (){
+        nock(client.host)
+          .matchHeader("Authorization", "apikey " + apiKey)
+          .filteringPath(function (path){
+            if (path.match(/lists/)) {
+              return "/3.0/lists/" + listId + "/members";
+            }
+          })
+          .put("/3.0/lists/" + listId + "/members")
+          .reply(200, listSubscribeSuccess);
+      });
+
+      it("should subscribe and callback", function (done) {
+        client.put("lists/" + listId + "/members", {
+          body: userDetails
+        }, function (err, member) {
+          if (err) {
+            done(err);
+            return;
+          }
+
+          expect(member.email).to.equal(listSubscribeSuccess.email);
+          expect(member.euid).to.equal(listSubscribeSuccess.euid);
+          expect(member.leid).to.equal(listSubscribeSuccess.leid);
+          done();
+        });
+      });
+
+      it("should subscribe and return a promise", function () {
+        return client.put("lists/" + listId + "/members", {
           body: userDetails
         }).then(function (member) {
           expect(member.email).to.equal(listSubscribeSuccess.email);
@@ -78,5 +121,4 @@ describe("mailchimpClient", function (){
       });
     });
   });
-
 });
