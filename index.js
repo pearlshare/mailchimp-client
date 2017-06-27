@@ -26,8 +26,8 @@ var Mailchimp = function (options) {
 
   this.apiKey = options.apiKey;
   this.logger = (options.logger || function () {});
-  this.host = this.host || "https://us8.api.mailchimp.com";
-  this.version = this.version || "3.0";
+  this.host = options.host || "https://us8.api.mailchimp.com";
+  this.version = options.version || "3.0";
   this.options = options;
 };
 
